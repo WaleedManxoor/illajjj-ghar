@@ -1,102 +1,110 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+  const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  // Function to check login status
+  const checkLoginStatus = () => {
+    const status = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(status);
+  };
+
+  useEffect(() => {
+    // Check status on mount
+    checkLoginStatus();
+
+    // Listen for the custom "storage" event we created in the Login page
+    window.addEventListener("storage", checkLoginStatus);
+
+    return () => window.removeEventListener("storage", checkLoginStatus);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    setIsLoggedIn(false);
+    setIsOpen(false);
+    navigate("/");
+  };
 
   return (
     <nav className="bg-white shadow-md relative z-50">
       <div className="container mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
         
         {/* LOGO */}
-        <div className="flex items-center gap-2">
-          <a href="/">
-            <img
-              src={logo}
-              alt="Illajjj Ghar Logo"
-              className="h-12 md:h-16 w-auto cursor-pointer invert"
-            />
-          </a>
-        </div>
+        <Link to="/">
+          <img src={logo} alt="Logo" className="h-12 md:h-16 w-auto invert" />
+        </Link>
 
-        {/* DESKTOP MENU (Hidden on Mobile) */}
+        {/* DESKTOP MENU */}
         <ul className="hidden lg:flex gap-8 text-gray-900 text-lg font-extrabold uppercase tracking-tight">
-          <li><a href="/" className="hover:text-green-700 transition-colors">Home</a></li>
-          <li><a href="/services" className="hover:text-green-700 transition-colors">Services</a></li>
-          <li><a href="/doctors" className="hover:text-green-700 transition-colors">Doctors</a></li>
+          <li><Link to="/" className="hover:text-green-700">Home</Link></li>
+          
+          {/* CONDITIONAL LINKS */}
+          {!isLoggedIn ? (
+            <li><Link to="/services" className="hover:text-green-700">Services</Link></li>
+          ) : (
+            <li><Link to="/doctors" className="hover:text-green-700">Doctors</Link></li>
+          )}
         </ul>
 
-        {/* DESKTOP ACTION BUTTONS (Hidden on Mobile) */}
+        {/* ACTION BUTTONS */}
         <div className="hidden lg:flex items-center gap-4">
           {!isLoggedIn ? (
             <>
-              <a href="/login" className="text-gray-900 font-extrabold text-lg hover:text-green-700 px-4">
+              <Link to="/login" className="text-gray-900 font-extrabold text-lg hover:text-green-700 px-4">
                 LOGIN
-              </a>
+              </Link>
               <button 
-                onClick={() => window.location.href = '/login'}
-                className="bg-[#8bc34a] text-white px-6 py-3 rounded-md font-extrabold text-lg hover:bg-green-700 transition-colors shadow-sm"
+                onClick={() => navigate('/login')}
+                className="bg-[#8bc34a] text-white px-6 py-3 rounded-md font-extrabold text-lg hover:bg-green-700 shadow-sm"
               >
                 Book Appointment
               </button>
             </>
           ) : (
             <div className="flex items-center gap-4">
-               <span className="font-bold text-green-700">Hi, User!</span>
-               <button className="bg-[#8bc34a] text-white px-6 py-3 rounded-md font-bold text-lg hover:bg-green-700 shadow-sm">
-                My Appointments
+               <Link to="/profile" className="font-bold text-green-700 hover:underline">My Profile</Link>
+               <button 
+                onClick={handleLogout}
+                className="bg-gray-200 text-gray-800 px-6 py-3 rounded-md font-bold text-lg hover:bg-red-100 transition-colors"
+              >
+                Logout
               </button>
             </div>
           )}
         </div>
 
-        {/* MOBILE HAMBURGER BUTTON (Hidden on Desktop) */}
-        <div className="lg:hidden flex items-center">
-          <button 
-            onClick={toggleMenu} 
-            className="text-gray-800 focus:outline-none p-2"
-          >
-            {/* Simple SVG for Hamburger Icon */}
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {isOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* MOBILE TOGGLE */}
+        <button onClick={() => setIsOpen(!isOpen)} className="lg:hidden p-2 text-gray-800">
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {isOpen ? <path d="M6 18L18 6M6 6l12 12" /> : <path d="M4 6h16M4 12h16m-7 6h7" />}
+          </svg>
+        </button>
       </div>
 
-      {/* MOBILE DROPDOWN MENU */}
-      <div 
-        className={`lg:hidden bg-white border-t transition-all duration-300 overflow-hidden ${
-          isOpen ? "max-h-screen opacity-100" : "max-h-0 opacity-0"
-        }`}
-      >
-        <ul className="flex flex-col p-6 gap-4 text-gray-900 text-lg font-extrabold uppercase">
-          <li><a href="/" onClick={toggleMenu} className="block hover:text-green-700">Home</a></li>
-          <li><a href="/services" onClick={toggleMenu} className="block hover:text-green-700">Services</a></li>
-          <li><a href="/doctors" onClick={toggleMenu} className="block hover:text-green-700">Doctors</a></li>
-          <li><a href="/contact" onClick={toggleMenu} className="block hover:text-green-700">Contact</a></li>
-          <hr className="my-2" />
+      {/* MOBILE MENU */}
+      <div className={`lg:hidden bg-white border-t transition-all duration-300 overflow-hidden ${isOpen ? "max-h-screen" : "max-h-0"}`}>
+        <ul className="flex flex-col p-6 gap-4 font-extrabold uppercase text-center">
+          <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
+          
           {!isLoggedIn ? (
-            <div className="flex flex-col gap-4">
-              <a href="/login" onClick={toggleMenu} className="text-gray-900 font-extrabold text-center py-2">LOGIN</a>
-              <button 
-                onClick={() => { toggleMenu(); window.location.href = '/login'; }}
-                className="bg-[#8bc34a] text-white px-6 py-3 rounded-md font-extrabold text-lg"
-              >
-                Book Appointment
-              </button>
-            </div>
+            <>
+              <li><Link to="/services" onClick={() => setIsOpen(false)}>Services</Link></li>
+              <hr />
+              <li><Link to="/login" onClick={() => setIsOpen(false)}>Login</Link></li>
+              <button onClick={() => {navigate('/login'); setIsOpen(false)}} className="bg-[#8bc34a] text-white p-3 rounded-md">Book Appointment</button>
+            </>
           ) : (
-            <button className="bg-[#8bc34a] text-white px-6 py-3 rounded-md font-bold text-lg">
-              My Appointments
-            </button>
+            <>
+              <li><Link to="/doctors" onClick={() => setIsOpen(false)}>Doctors</Link></li>
+              <hr />
+              <li><Link to="/profile" onClick={() => setIsOpen(false)} >My Profile</Link></li>
+              <button onClick={handleLogout} className="text-red-500">Logout</button>
+            </>
           )}
         </ul>
       </div>
