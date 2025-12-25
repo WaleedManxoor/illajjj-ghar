@@ -14,7 +14,7 @@ const generateDoctors = () => {
     const spec = specialties[i % specialties.length];
     return {
       id: i + 1,
-      name: `Dr. ${["Hamza", "Ayesha", "Waleed", "Zainab", "Bilal", "Sana"][i % 6]} ${i + 1}`,
+      name: `Dr. ${["Hamza", "Muneeb", "Talha", "Arsalan", "Bilal", "Hamad"][i % 6]} ${i + 1}`,
       specialty: spec.name,
       icon: spec.icon,
       experience: `${(i % 12) + 3} Years`,

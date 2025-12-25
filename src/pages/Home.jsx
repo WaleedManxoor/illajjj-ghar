@@ -5,11 +5,11 @@ import myPhoto from "../assets/my-photo.png";
 export default function Home() {
   // --- DOCTOR DATA ---
   const allDoctors = [
-    { id: 1, name: "Dr. Sarah Khan", exp: "8 years", specialty: "General Physician", rating: 4.9, img: "https://xsgames.co/randomusers/assets/avatars/female/1.jpg" },
+    { id: 1, name: "Dr. Waqar Khan", exp: "8 years", specialty: "General Physician", rating: 4.9, img: "https://xsgames.co/randomusers/assets/avatars/female/1.jpg" },
     { id: 2, name: "Dr. Ahmed Raza", exp: "10 years", specialty: "Dermatologist", rating: 4.8, img: "https://xsgames.co/randomusers/assets/avatars/male/2.jpg" },
-    { id: 3, name: "Dr. Zainab Ali", exp: "5 years", specialty: "Pediatrician", rating: 4.7, img: "https://xsgames.co/randomusers/assets/avatars/female/10.jpg" },
+    { id: 3, name: "Dr. Amar Ali", exp: "5 years", specialty: "Pediatrician", rating: 4.7, img: "https://xsgames.co/randomusers/assets/avatars/female/10.jpg" },
     { id: 4, name: "Dr. Bilal Sheikh", exp: "12 years", specialty: "Cardiologist", rating: 5.0, img: "https://xsgames.co/randomusers/assets/avatars/male/4.jpg" },
-    { id: 5, name: "Dr. Maria Sunal", exp: "7 years", specialty: "Gynaecologist", rating: 4.6, img: "https://xsgames.co/randomusers/assets/avatars/female/5.jpg" },
+    { id: 5, name: "Dr. Zohaib Sunal", exp: "7 years", specialty: "Gynaecologist", rating: 4.6, img: "https://xsgames.co/randomusers/assets/avatars/female/5.jpg" },
     { id: 6, name: "Dr. Usman Pirzada", exp: "15 years", specialty: "Neurologist", rating: 4.9, img: "https://xsgames.co/randomusers/assets/avatars/male/8.jpg" },
   ];
 
@@ -17,7 +17,7 @@ export default function Home() {
   const testimonials = [
     { id: 1, name: "Mr. Waleed Manzoor", role: "CEO of Tech Solutions Pvt Ltd", text: "Illajjj Ghar has completely changed how I access healthcare. The speed of connection and the quality of doctors available online is truly impressive.", img: myPhoto },
     { id: 2, name: "Mr. Javed Ahmed", role: "CEO of Jubilee Life", text: "One thing which worked out very well is the application itself. We have never had any complaints regarding doctors availability.", img: "https://xsgames.co/randomusers/assets/avatars/male/7.jpg" },
-    { id: 3, name: "Ayesha Malik", role: "Mother of Two", text: "The pediatrician service is a lifesaver. I was able to consult a doctor at 2 AM when my son had a high fever.", img: "https://xsgames.co/randomusers/assets/avatars/female/1.jpg" }
+    { id: 3, name: "Abdullah Malik", role: "Mother of Two", text: "The pediatrician service is a lifesaver. I was able to consult a doctor at 2 AM when my son had a high fever.", img: "https://xsgames.co/randomusers/assets/avatars/female/1.jpg" }
   ];
 
   const [docIndex, setDocIndex] = useState(0);
