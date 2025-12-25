@@ -27,7 +27,6 @@ export default function Navbar() {
           <li><a href="/" className="hover:text-green-700 transition-colors">Home</a></li>
           <li><a href="/services" className="hover:text-green-700 transition-colors">Services</a></li>
           <li><a href="/doctors" className="hover:text-green-700 transition-colors">Doctors</a></li>
-          <li><a href="/contact" className="hover:text-green-700 transition-colors">Contact</a></li>
         </ul>
 
         {/* DESKTOP ACTION BUTTONS (Hidden on Mobile) */}
